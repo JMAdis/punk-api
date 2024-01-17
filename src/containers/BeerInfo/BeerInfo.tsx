@@ -28,7 +28,7 @@ const BeerInfo = ({ beers }: BeerInfoProps) => {
       <div className="beer-info__info">
         <h2 className="beer-info__info--heading">{beer.name}</h2>
         <p>{beer.description}</p>
-        <h2>Other tidbits</h2>
+        <h2>Other info</h2>
 
         <p>{beer.tagline}</p>
         <p>ABV:{beer.abv}%</p>
