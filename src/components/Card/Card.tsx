@@ -16,6 +16,7 @@ const Card = ({ id, name, image, tagline, description}: CardProps) => {
       <div className="card__info">
         <h2 className="card__tagline">{tagline}</h2>
         <p className="card__description">{description}</p>
+        {/** <button>+ Find out more</button> */}
       </div>
     </div>
   );
