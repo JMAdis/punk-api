@@ -18,7 +18,6 @@ const CardList = ({ beers }: CardListProps) => {
               image={beer.image_url}
               tagline={beer.tagline}
               abv={beer.abv}
-              brewed={beer.first_brewed}
             />
           ))}
       </div>

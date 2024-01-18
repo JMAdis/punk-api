@@ -3,6 +3,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
 import CardList from "./components/CardList/CardList";
 import NavBar from "./containers/NavBar/NavBar";
+import BeerInfo from "./containers/BeerInfo/BeerInfo";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -91,6 +92,9 @@ const App = () => {
             Uh oh! The beer you were looking for couldn't be found, try again!
           </p>
         )}
+      </div>
+      <div>
+        <BeerInfo beers={filteredBeers} />
       </div>
     </main>
   );

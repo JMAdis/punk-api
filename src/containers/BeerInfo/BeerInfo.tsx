@@ -7,12 +7,14 @@ type BeerInfoProps = {
 };
 
 const BeerInfo = ({ beers }: BeerInfoProps) => {
-  const { beerId } = useParams();
-  const beer = beers.find((drink) => drink.id.toString() === beerId);
+  const { beerId } = useParams<{ beerId: string }>();
 
-  if (beer === undefined)
-    return <p>I'm sorry, we can't find this beer right now.</p>;
+  const beer = beers.find((beer) => beer.id.toString() === beerId)
 
+  if (!beer) {
+    return <p>Beer not found</p>;
+  }
+  
   return (
     <div className="beer-info">
       <Link to="/">
@@ -29,13 +31,12 @@ const BeerInfo = ({ beers }: BeerInfoProps) => {
         <h2 className="beer-info__info--heading">{beer.name}</h2>
         <p>{beer.description}</p>
         <h2>Other info</h2>
-
         <p>{beer.tagline}</p>
         <p>ABV:{beer.abv}%</p>
         <p className="beerparings">Food pairings: </p>
         <ul>
-          {beer.food_pairing.map((food) => (
-            <li>{food}</li>
+          {beer.food_pairing.map((food, index) => (
+            <li key={index}>{food}</li>
           ))}
         </ul>
       </div>
