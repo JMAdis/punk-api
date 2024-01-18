@@ -13,7 +13,9 @@ const App = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://api.punkapi.com/v2/beers");
+      const response = await fetch(
+        "https://api.punkapi.com/v2/beers?page=1&per_page=80"
+      );
       const data = await response.json();
       setApiBeers(data);
     } catch (error) {
@@ -38,7 +40,7 @@ const App = () => {
       } else {
         newFilters.add(filter);
       }
-      console.log(newFilters)
+      console.log(newFilters);
       return newFilters;
     });
   };
@@ -50,17 +52,17 @@ const App = () => {
   const applyFilters = (beer: Beer) => {
     return Array.from(selectedFilters).every((filter) => {
       if (
-        (filter === "abv" && beer.abv > 6) || 
-        (filter === "ph" && beer.ph > 4) || 
+        (filter === "abv" && beer.abv > 6) ||
+        (filter === "ph" && beer.ph > 4) ||
         (filter === "first_brewed" &&
-        beer.first_brewed &&
-        parseInt(beer.first_brewed.split("/")[1], 10) < 2010)
-        ) {
-          return true;
-        }
-        return false;
-      })
-    };
+          beer.first_brewed &&
+          parseInt(beer.first_brewed.split("/")[1], 10) < 2010)
+      ) {
+        return true;
+      }
+      return false;
+    });
+  };
 
   const filteredBeers = apiBeers.filter(
     (beer) =>
@@ -68,25 +70,29 @@ const App = () => {
       beer.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log(filteredBeers)
+  console.log(filteredBeers);
 
   return (
-    <div>
-      <NavBar
-        abvChange={filterByABV}
-        yearChange={filterByYear}
-        phChange={filterByPH}
-        searchTerm={searchTerm}
-        handleInput={handleInputChanges}
-      />
-      {filteredBeers.length > 0 ? (
-        <CardList beers={filteredBeers} />
-      ) : (
-        <p>
-          Uh oh! The beer you were looking for couldn't be found, try again!
-        </p>
-      )}
-    </div>
+    <main>
+      <div>
+        <NavBar
+          abvChange={filterByABV}
+          yearChange={filterByYear}
+          phChange={filterByPH}
+          searchTerm={searchTerm}
+          handleInput={handleInputChanges}
+        />
+      </div>
+      <div>
+        {filteredBeers.length > 0 ? (
+          <CardList beers={filteredBeers} />
+        ) : (
+          <p>
+            Uh oh! The beer you were looking for couldn't be found, try again!
+          </p>
+        )}
+      </div>
+    </main>
   );
 };
 

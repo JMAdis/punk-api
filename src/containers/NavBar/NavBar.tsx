@@ -15,6 +15,7 @@ const NavBar = ({abvChange, yearChange, phChange, searchTerm, handleInput}: NavB
   return (
     <nav>
         <SearchBox searchTerm={searchTerm} handleInput={handleInput} />
+        <h1>PUNK API Project</h1>
         <FilterList abvChange={abvChange} yearChange={yearChange} phChange={phChange}/>
     </nav>
   );
