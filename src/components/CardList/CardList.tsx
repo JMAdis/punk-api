@@ -7,11 +7,6 @@ type CardListProps = {
 };
 
 const CardList = ({ beers }: CardListProps) => {
-  if (beers.length === 0) {
-    return (
-      <p>Uh oh! The beer you were looking for couldn't be found, try again!</p>
-    );
-  } else {
     return (
       <div className="card-container">
         {beers &&
@@ -22,12 +17,11 @@ const CardList = ({ beers }: CardListProps) => {
               name={beer.name}
               image={beer.image_url}
               tagline={beer.tagline}
-              description={beer.description}
+              abv={beer.abv}
             />
           ))}
       </div>
     );
-  }
-};
+  };
 
 export default CardList;

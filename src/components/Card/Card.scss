@@ -35,15 +35,11 @@
       display: unset;
     }
 
-    &__description {
-      display: none;
-    }
-
     &__name {
       font-size: 1.5rem;
     }
 
-    &__tagline {
+    &__tagline, &__ABV {
       font-size: 1rem;
     }
   }
@@ -53,12 +49,5 @@
   .card {
     height: 20rem;
     padding: 1rem;
-
-    &__description {
-      display: unset;
-      font-size: 1rem;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
   }
 }
