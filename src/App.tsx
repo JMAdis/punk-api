@@ -7,13 +7,6 @@ import NavBar from "./containers/NavBar/NavBar";
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [apiBeers, setApiBeers] = useState<Beer[]>([]);
-  {
-    /** 
-  const [highABVBeers, setHighABVBeers] = useState<Beer[]>([]);
-  const [highPH, setHighPH] = useState<Beer[]>([]);
-  const [classicRange, setClassicRange] = useState<Beer[]>([]);
-  */
-  }
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(
     new Set()
   );
@@ -61,7 +54,7 @@ const App = () => {
         (filter === "ph" && beer.ph > 4) || 
         (filter === "first_brewed" &&
         beer.first_brewed &&
-        new Date(beer.first_brewed).getFullYear() < 2010)
+        parseInt(beer.first_brewed.split("/")[1], 10) < 2010)
         ) {
           return true;
         }
