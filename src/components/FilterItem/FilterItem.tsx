@@ -5,7 +5,7 @@ type FilterItemProps = {
     id: string; 
     label: string;
     onChange: ChangeEventHandler<HTMLInputElement>;
-    checked: boolean;
+    checked: boolean | undefined;
 };
 
 const FilterItem = ({ id, label, onChange, checked } : FilterItemProps) => {

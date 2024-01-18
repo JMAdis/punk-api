@@ -1,14 +1,22 @@
 import "./App.css";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
 import CardList from "./components/CardList/CardList";
-import SearchBox from "./components/SearchBox/SearchBox";
+import NavBar from "./containers/NavBar/NavBar";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [apiBeers, setApiBeers] = useState<Beer[]>([]);
+  {
+    /** 
   const [highABVBeers, setHighABVBeers] = useState<Beer[]>([]);
   const [highPH, setHighPH] = useState<Beer[]>([]);
+  const [classicRange, setClassicRange] = useState<Beer[]>([]);
+  */
+  }
+  const [selectedFilters, setSelectedFilters] = useState<Set<string>>(
+    new Set()
+  );
 
   const fetchData = async () => {
     try {
@@ -29,60 +37,64 @@ const App = () => {
     setSearchTerm(searchedTerm);
   };
 
-  const filterByABV = (event: ChangeEvent<HTMLInputElement>) => {
-    const isHigh = event.target.checked;
-
-    if (isHigh) {
-      const ABVfiltered = apiBeers.filter((beer) => beer.abv > 6);
-      setHighABVBeers(ABVfiltered);
-    } else {
-      setHighABVBeers([]);
-    }
+  const toggleFilter = (filter: string) => {
+    setSelectedFilters((prevFilters) => {
+      const newFilters = new Set(prevFilters);
+      if (newFilters.has(filter)) {
+        newFilters.delete(filter);
+      } else {
+        newFilters.add(filter);
+      }
+      console.log(newFilters)
+      return newFilters;
+    });
   };
 
-    const filterByPH = (event: ChangeEvent<HTMLInputElement>) => {
-      const isAcidic = event.target.checked;
+  const filterByABV = () => toggleFilter("abv");
+  const filterByPH = () => toggleFilter("ph");
+  const filterByYear = () => toggleFilter("first_brewed");
 
-      if (isAcidic) {
-        const PHFiltered = apiBeers.filter((beer) => beer.ph > 4);
-        setHighPH(PHFiltered);
-      } else {
-        setHighPH([]);
-      }
+  const applyFilters = (beer: Beer) => {
+    return Array.from(selectedFilters).every((filter) => {
+      if (
+        (filter === "abv" && beer.abv > 6) || 
+        (filter === "ph" && beer.ph > 4) || 
+        (filter === "first_brewed" &&
+        beer.first_brewed &&
+        new Date(beer.first_brewed).getFullYear() < 2010)
+        ) {
+          return true;
+        }
+        return false;
+      })
     };
 
-      const combinedFilteredBeers = apiBeers
-      .filter((beer) => (highABVBeers.length === 0 || highABVBeers.includes(beer)))
-      .filter((beer) => (highPH.length === 0 || highPH.includes(beer)))
-      .filter((beer) => 
+  const filteredBeers = apiBeers.filter(
+    (beer) =>
+      applyFilters(beer) &&
       beer.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  );
 
-      return (
-        <div>
-          <div>
-            <SearchBox
-              searchTerm={searchTerm}
-              handleInput={handleInputChanges}
-            />
-          </div>
-          <div>
-            <p>High ABV +6.0%</p>
-            <input type="checkbox" onChange={filterByABV} />
-          </div>
-          <div>
-            <p>Acidic</p>
-            <input type="checkbox" onChange={filterByPH} />
-          </div>
-          {combinedFilteredBeers.length > 0 ? (
-            <CardList beers={combinedFilteredBeers} />
-          ) : (
-            <p>
-              Uh oh! The beer you were looking for couldn't be found, try again!
-            </p>
-          )}
-        </div>
-      );
-    };
+  console.log(filteredBeers)
+
+  return (
+    <div>
+      <NavBar
+        abvChange={filterByABV}
+        yearChange={filterByYear}
+        phChange={filterByPH}
+        searchTerm={searchTerm}
+        handleInput={handleInputChanges}
+      />
+      {filteredBeers.length > 0 ? (
+        <CardList beers={filteredBeers} />
+      ) : (
+        <p>
+          Uh oh! The beer you were looking for couldn't be found, try again!
+        </p>
+      )}
+    </div>
+  );
+};
 
 export default App;

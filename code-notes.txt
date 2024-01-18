@@ -70,3 +70,104 @@
       .catch((err) => console.log(err));
   }, []);
 */}
+
+---------------------------
+
+const filterByYear = (event: ChangeEvent<HTMLInputElement>) => {
+    const isClassic = event.target.checked;
+
+    if (isClassic) {
+      const classicYear = 2010;
+
+      const classicFiltered = apiBeers.filter((beer) => {
+        const firstBrewedDate = beer.first_brewed;
+
+        if (firstBrewedDate) {
+          const [month, year] = firstBrewedDate.split("/");
+          const firstBrewedYear = parseInt(year, 10);
+
+          return firstBrewedYear && firstBrewedYear < classicYear;
+        }
+
+        return false;
+      });
+
+      setClassicRange(classicFiltered);
+    } else {
+      setClassicRange([]);
+    }
+  };
+
+
+{/** 
+  const filterByABV = (event: ChangeEvent<HTMLInputElement>) => {
+    const isHigh = event.target.checked;
+
+    if (isHigh) {
+      const ABVfiltered = apiBeers.filter((beer) => beer.abv > 6);
+      setHighABVBeers(ABVfiltered);
+    } else {
+      setHighABVBeers([]);
+    }
+  };
+
+  const filterByPH = (event: ChangeEvent<HTMLInputElement>) => {
+    const isAcidic = event.target.checked;
+
+    if (isAcidic) {
+      const PHFiltered = apiBeers.filter((beer) => beer.ph > 4);
+      setHighPH(PHFiltered);
+    } else {
+      setHighPH([]);
+    }
+  };
+
+  const filterByYear = (event: ChangeEvent<HTMLInputElement>) => {
+    const isClassic = event.target.checked;
+
+    if (isClassic) {
+      const classicYear = 2010;
+
+      const classicFiltered = apiBeers.filter((beer) => {
+        const firstBrewedDate = beer.first_brewed;
+
+        if (firstBrewedDate) {
+          const [month, year] = firstBrewedDate.split("/");
+          const firstBrewedFullDate = new Date(`${year}-${month}-01`);
+          return firstBrewedFullDate < new Date(classicYear, 0, 1);
+        }
+
+        return false;
+      });
+
+      setClassicRange(classicFiltered);
+    } else {
+      setClassicRange([]);
+    }
+  };
+*/}
+
+------------------------------------------------------
+
+const combinedFilteredBeers = Array.from(
+    new Set ([
+      ...highABVBeers.map((beer) => beer.id),
+      ...highPH.map((beer) => beer.id),
+      ...classicRange.map((beer) => beer.id),
+    ])
+  ).map((id) => apiBeers.find((beer) => beer.id === id));
+
+  const finalFilteredBeers = combinedFilteredBeers.filter(
+    (beer) =>
+    beer &&
+    beer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+{/** 
+  const combinedFilteredBeers = apiBeers
+    .filter((beer) => highABVBeers.length === 0 || highABVBeers.includes(beer))
+    .filter((beer) => highPH.length === 0 || highPH.includes(beer))
+    .filter((beer) => classicRange.length === 0 || classicRange.includes(beer))
+    .filter((beer) =>
+      beer.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+*/}

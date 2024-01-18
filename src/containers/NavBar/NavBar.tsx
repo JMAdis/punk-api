@@ -4,18 +4,18 @@ import SearchBox from "../../components/SearchBox/SearchBox";
 import { ChangeEventHandler } from "react";
 
 type NavBarProps = {
-    ABVChange: boolean;
-    ClassicRangeChange: boolean; 
-    PhChange: number;
-    searchTerm: string;
-    handleInput: ChangeEventHandler<HTMLInputElement>;
+  abvChange: ChangeEventHandler<HTMLInputElement>;
+  yearChange: ChangeEventHandler<HTMLInputElement>; 
+  phChange: ChangeEventHandler<HTMLInputElement>;
+  searchTerm: string;
+  handleInput: ChangeEventHandler<HTMLInputElement>;
 };
 
-const NavBar = ({ABVChange, ClassicRangeChange, PhChange, searchTerm, handleInput}: NavBarProps) => {
+const NavBar = ({abvChange, yearChange, phChange, searchTerm, handleInput}: NavBarProps) => {
   return (
     <nav>
-        <SearchBox searchTerm={searchTerm} handleInput={handleInput} placeholder="Search beers..."/>
-        <FilterList ABVChange={ABVChange} ClassicRangeChange={ClassicRangeChange} PhChange={PhChange}/>
+        <SearchBox searchTerm={searchTerm} handleInput={handleInput} />
+        <FilterList abvChange={abvChange} yearChange={yearChange} phChange={phChange}/>
     </nav>
   );
 };

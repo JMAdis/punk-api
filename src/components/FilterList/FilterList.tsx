@@ -2,19 +2,44 @@ import FilterItem from "../FilterItem/FilterItem";
 import "./FilterList.scss";
 
 type FilterListProps = {
-    ABVChange: boolean
-    ClassicRangeChange: boolean
-    PhChange: boolean
+  abvChange: React.ChangeEventHandler<HTMLInputElement>;
+  yearChange: React.ChangeEventHandler<HTMLInputElement>;
+  phChange: React.ChangeEventHandler<HTMLInputElement>;
+  isABVChecked?: boolean;
+  isYearChecked?: boolean;
+  isPhChecked?: boolean;
 };
 
-const FilterList = ({ABVChange, ClassicRangeChange, PhChange} : FilterListProps) => {
+const FilterList = ({
+  abvChange,
+  yearChange,
+  phChange,
+  isABVChecked,
+  isYearChecked,
+  isPhChecked,
+}: FilterListProps) => {
   return (
     <div>
-        <FilterItem onChange={ABVChange} label="High ABV (>6.0%)" />
-        <FilterItem onChange={ClassicRangeChange} label="Classic Range" />
-        <FilterItem onChange={PhChange} label="Acidic (ph < 4)" />
+      <FilterItem
+        id="ABV"
+        onChange={abvChange}
+        label="High ABV (>6.0%)"
+        checked={isABVChecked}
+      />
+      <FilterItem
+        id="ClassicRange"
+        onChange={yearChange}
+        label="Classic Range"
+        checked={isYearChecked}
+      />
+      <FilterItem
+        id="PH"
+        onChange={phChange}
+        label="Acidic (ph < 4)"
+        checked={isPhChecked}
+      />
     </div>
   );
 };
 
-export default FilterList
+export default FilterList;
