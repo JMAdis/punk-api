@@ -3,7 +3,6 @@ import "./SearchBox.scss";
 
 type SearchBoxProps = {
     searchTerm: string;
-    placeholder: string;
     handleInput: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -11,7 +10,7 @@ const SearchBox = ({searchTerm, handleInput}: SearchBoxProps) => {
   return (
     <input 
     type="text"
-    placeholder="Search..."
+    placeholder="Type to search beers"
     value={searchTerm}
     onChange={handleInput}
     />
