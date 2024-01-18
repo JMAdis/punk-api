@@ -1,4 +1,5 @@
 import "./Card.scss";
+import { Link } from "react-router-dom";
 
 type CardProps = {
   id: number;
@@ -19,7 +20,9 @@ const Card = ({ id, name, image, tagline, abv }: CardProps) => {
           <p className="card__ABV">ABV: {abv}%</p>
         </div>
       </div>
+      <Link to={`/beer/${id}`} className="card__button--link" key={id}>
       <button className="card__button">Find out more</button>
+      </Link>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import "./App.css";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
 import CardList from "./components/CardList/CardList";
@@ -74,29 +75,36 @@ const App = () => {
   console.log(filteredBeers);
 
   return (
-    <main>
-      <div>
-        <NavBar
-          abvChange={filterByABV}
-          yearChange={filterByYear}
-          phChange={filterByPH}
-          searchTerm={searchTerm}
-          handleInput={handleInputChanges}
-        />
-      </div>
-      <div>
-        {filteredBeers.length > 0 ? (
-          <CardList beers={filteredBeers} />
-        ) : (
-          <p>
-            Uh oh! The beer you were looking for couldn't be found, try again!
-          </p>
-        )}
-      </div>
-      <div>
-        <BeerInfo beers={filteredBeers} />
-      </div>
-    </main>
+    <Router>
+      <main>
+        <Route path="/">
+          <div>
+            <NavBar
+              abvChange={filterByABV}
+              yearChange={filterByYear}
+              phChange={filterByPH}
+              searchTerm={searchTerm}
+              handleInput={handleInputChanges}
+            />
+          </div>
+          <div>
+            {filteredBeers.length > 0 ? (
+              <CardList beers={filteredBeers} />
+            ) : (
+              <p>
+                Uh oh! The beer you were looking for couldn't be found, try
+                again!
+              </p>
+            )}
+          </div>
+        </Route>
+        <Route path="/beer/:beerId">
+          <div>
+            <BeerInfo beers={filteredBeers} />
+          </div>
+        </Route>
+      </main>
+    </Router>
   );
 };
 
