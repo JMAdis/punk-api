@@ -18,7 +18,7 @@ const SelectHops = ({
         onChange={(e) => onSelectHop(e.target.value)}
         value={selectedHop}
       >
-        <option value="">Select Hop</option>
+        <option value="">All Hops</option>
         {uniqueHops.map((hop, index) => {
           return (
             <option key={index} value={hop}>

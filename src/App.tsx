@@ -62,27 +62,33 @@ const App = () => {
   const filterByYear = () => toggleFilter("first_brewed");
 
   const applyFilters = (beer: Beer) => {
-    return Array.from(selectedFilters).every((filter) => {
+    const result= Array.from(selectedFilters).every((filter) => {
       if (
         (filter === "abv" && beer.abv > 6) ||
         (filter === "ph" && beer.ph > 4) ||
         (filter === "first_brewed" &&
           beer.first_brewed &&
-          parseInt(beer.first_brewed.split("/")[1], 10) < 2010)
+          parseInt(beer.first_brewed.split("/")[1], 10) < 2010) ||
+        (filter === "hops" && selectedHop && beer.ingredients.hops.some((hop) => hop.name === selectedHop))
       ) {
         return true;
       }
       return false;
     });
+    
+    return result;
+  };
+
+  const handleHopChange = (hop: string) => {
+    setSelectedHop(hop);
   };
 
   const filteredBeers = apiBeers.filter(
     (beer) =>
       applyFilters(beer) &&
-      beer.name.toLowerCase().includes(searchTerm.toLowerCase())
+      beer.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (!selectedHop || beer.ingredients.hops.some((hop) => hop.name === selectedHop))
   );
-
-  console.log(filteredBeers);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -91,12 +97,13 @@ const App = () => {
   if (!dataLoaded) {
     return <p>Data not loaded</p>;
   }
-
+ 
   const uniqueHops: string[] = Array.from(
     new Set(
       apiBeers.flatMap((beer) => beer.ingredients.hops.map((hop) => hop.name))
     )
   );
+
 
   return (
     <main>
@@ -113,8 +120,8 @@ const App = () => {
                   searchTerm={searchTerm}
                   handleInput={handleInputChanges}
                   uniqueHops={uniqueHops}
-                  onSelectHop={setSelectedHop}
-                  selectedHop={selectedHop}
+                  onSelectHop={handleHopChange}
+                  selectedHop={selectedHop || ""}
                 />
                 {filteredBeers.length > 0 ? (
                   <CardList beers={filteredBeers} />

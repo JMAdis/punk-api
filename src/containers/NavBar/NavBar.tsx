@@ -6,7 +6,7 @@ import { ChangeEventHandler } from "react";
 
 type NavBarProps = {
   abvChange: ChangeEventHandler<HTMLInputElement>;
-  yearChange: ChangeEventHandler<HTMLInputElement>; 
+  yearChange: ChangeEventHandler<HTMLInputElement>;
   phChange: ChangeEventHandler<HTMLInputElement>;
   searchTerm: string;
   handleInput: ChangeEventHandler<HTMLInputElement>;
@@ -15,17 +15,34 @@ type NavBarProps = {
   selectedHop: string;
 };
 
-const NavBar = ({abvChange, yearChange, phChange, searchTerm, handleInput, uniqueHops, onSelectHop, selectedHop}: NavBarProps) => {
-  const handleHopSelection = (hop) => {
+const NavBar = ({
+  abvChange,
+  yearChange,
+  phChange,
+  searchTerm,
+  handleInput,
+  uniqueHops,
+  onSelectHop,
+  selectedHop,
+}: NavBarProps) => {
+  const handleHopSelection = (hop: string) => {
     onSelectHop(hop);
   };
 
   return (
     <nav>
-        <SearchBox searchTerm={searchTerm} handleInput={handleInput} />
-        <SelectHops uniqueHops={uniqueHops} onSelectHop={handleHopSelection} selectedHop={selectedHop}/>
-        <h1>PUNK API Project</h1>
-        <FilterList abvChange={abvChange} yearChange={yearChange} phChange={phChange}/>
+      <SearchBox searchTerm={searchTerm} handleInput={handleInput} />
+      <SelectHops
+        uniqueHops={uniqueHops}
+        onSelectHop={handleHopSelection}
+        selectedHop={selectedHop}
+      />
+      <h1>PUNK API Project</h1>
+      <FilterList
+        abvChange={abvChange}
+        yearChange={yearChange}
+        phChange={phChange}
+      />
     </nav>
   );
 };
