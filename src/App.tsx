@@ -1,5 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
 import CardList from "./components/CardList/CardList";
@@ -12,6 +17,8 @@ const App = () => {
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(
     new Set()
   );
+  const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -20,6 +27,8 @@ const App = () => {
       );
       const data = await response.json();
       setApiBeers(data);
+      setLoading(false);
+      setDataLoaded(true);
     } catch (error) {
       console.log(error);
     }
@@ -74,37 +83,52 @@ const App = () => {
 
   console.log(filteredBeers);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!dataLoaded) {
+    return <p>Data not loaded</p>;
+  }
+
   return (
-    <Router>
-      <main>
-        <Route path="/">
-          <div>
-            <NavBar
-              abvChange={filterByABV}
-              yearChange={filterByYear}
-              phChange={filterByPH}
-              searchTerm={searchTerm}
-              handleInput={handleInputChanges}
-            />
-          </div>
-          <div>
-            {filteredBeers.length > 0 ? (
-              <CardList beers={filteredBeers} />
-            ) : (
-              <p>
-                Uh oh! The beer you were looking for couldn't be found, try
-                again!
-              </p>
-            )}
-          </div>
-        </Route>
-        <Route path="/beer/:beerId">
-          <div>
-            <BeerInfo beers={filteredBeers} />
-          </div>
-        </Route>
-      </main>
-    </Router>
+    <main>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <NavBar
+                  abvChange={filterByABV}
+                  yearChange={filterByYear}
+                  phChange={filterByPH}
+                  searchTerm={searchTerm}
+                  handleInput={handleInputChanges}
+                />
+                {filteredBeers.length > 0 ? (
+                  <CardList beers={filteredBeers} />
+                ) : (
+                  <p>
+                    Uh oh! The beer you were looking for couldn't be found, try
+                    again!
+                  </p>
+                )}
+              </>
+            }
+          />
+          <Route
+            path="/beer/:beerId"
+            element={
+              <div>
+                <BeerInfo beers={filteredBeers} />
+              </div>
+            }
+          />
+          <Route path="/*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
+    </main>
   );
 };
 
