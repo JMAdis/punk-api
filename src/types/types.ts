@@ -28,7 +28,7 @@ type Ingredients = {
   yeast: string;
 };
 
-type Hop = {
+export type Hop = {
   name: string;
   amount: Volume;
   add: string;
