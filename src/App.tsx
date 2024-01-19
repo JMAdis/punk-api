@@ -7,9 +7,11 @@ import {
 } from "react-router-dom";
 import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
+import { Hop } from "./types/types";
 import CardList from "./components/CardList/CardList";
 import NavBar from "./containers/NavBar/NavBar";
 import BeerInfo from "./components/BeerInfo/BeerInfo";
+//import SelectHops from "./components/SelectHops/SelectHops";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +21,7 @@ const App = () => {
   );
   const [loading, setLoading] = useState(true);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [selectedHop, setSelectedHop] = useState<string>("");
 
   const fetchData = async () => {
     try {
@@ -91,6 +94,12 @@ const App = () => {
     return <p>Data not loaded</p>;
   }
 
+  const uniqueHops: string[] = Array.from(
+    new Set(
+      apiBeers.flatMap((beer) => beer.ingredients.hops.map((hop) => hop.name))
+    )
+  );
+
   return (
     <main>
       <Router>
@@ -106,6 +115,22 @@ const App = () => {
                   searchTerm={searchTerm}
                   handleInput={handleInputChanges}
                 />
+                <div>
+                  <select
+                    title="hops :)"
+                    onChange={(e) => setSelectedHop(e.target.value)}
+                    value={selectedHop}
+                  >
+                    <option value="">Select Hop</option>
+                    {uniqueHops.map((hop, index) => {
+                      return (
+                        <option key={index} value={hop}>
+                          {hop}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
                 {filteredBeers.length > 0 ? (
                   <CardList beers={filteredBeers} />
                 ) : (
