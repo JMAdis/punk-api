@@ -9,7 +9,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { Beer } from "./types/types";
 import CardList from "./components/CardList/CardList";
 import NavBar from "./containers/NavBar/NavBar";
-import BeerInfo from "./containers/BeerInfo/BeerInfo";
+import BeerInfo from "./components/BeerInfo/BeerInfo";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
